@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  Flex,
   PasswordInput,
   Stack,
   TextInput,
@@ -35,32 +36,34 @@ export function AuthLogin() {
   }
 
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
-      <Title order={2} ta="center" mb="md">
-        Вход в систему
-      </Title>
+    <Flex mih="100vh" justify="center" align="center">
+      <Card shadow="sm" padding="lg" radius="md" withBorder miw={360}>
+        <Title order={2} ta="center" mb="md">
+          Login
+        </Title>
 
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Stack>
-          <TextInput
-            label="Email / Username"
-            placeholder="Enter email or username"
-            {...form.getInputProps('username')}
-            required
-          />
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Stack>
+            <TextInput
+              label="Email / Username"
+              placeholder="Enter email or username"
+              {...form.getInputProps('username')}
+              required
+            />
 
-          <PasswordInput
-            label="Password"
-            placeholder="Enter password"
-            {...form.getInputProps('password')}
-            required
-          />
+            <PasswordInput
+              label="Password"
+              placeholder="Enter password"
+              {...form.getInputProps('password')}
+              required
+            />
 
-          <Button type="submit" fullWidth>
-            Login
-          </Button>
-        </Stack>
-      </form>
-    </Card>
+            <Button type="submit" fullWidth>
+              Login
+            </Button>
+          </Stack>
+        </form>
+      </Card>
+    </Flex>
   )
 }
