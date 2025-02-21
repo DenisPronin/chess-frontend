@@ -26,6 +26,6 @@ $loginError.on(loginFx.fail, (_, request) => request.error)
 
 sample({
   clock: loginFx.done,
-  source: loginFx.doneData,
+  fn: ({ result }) => result.token,
   target: setAuthToken,
 })
