@@ -7,32 +7,32 @@ import {
   TextInput,
   Title,
 } from '@mantine/core'
-import { useForm } from '@mantine/form'
-
-interface FormValues {
-  username: string
-  password: string
-}
+import { useUnit } from 'effector-react'
+import { ChangeEvent, FormEvent } from 'react'
+import {
+  $loginForm,
+  changedPassword,
+  changedUsername,
+  loginFx,
+} from './AuthLogin.store'
 
 export function AuthLogin() {
-  const form = useForm<FormValues>({
-    initialValues: {
-      username: '',
-      password: '',
-    },
+  const form = useUnit($loginForm)
+  const onChangeUsername = useUnit(changedUsername)
+  const onChangePassword = useUnit(changedPassword)
 
-    validate: {
-      username: (value) =>
-        /^\S+@\S+$/.test(value) || /^[a-zA-Z0-9_]+$/.test(value)
-          ? null
-          : 'Enter email or username',
-      password: (value) =>
-        value.length >= 6 ? null : 'Password must be at least 6 characters',
-    },
-  })
+  const handleChangeUsername = (e: ChangeEvent<HTMLInputElement>) => {
+    onChangeUsername(e.target.value)
+  }
 
-  const handleSubmit = (values: FormValues) => {
-    console.log('Submitted values:', values)
+  const handleChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
+    onChangePassword(e.target.value)
+  }
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    await loginFx({ ...form })
+    console.log('login success')
   }
 
   return (
@@ -42,20 +42,22 @@ export function AuthLogin() {
           Login
         </Title>
 
-        <form onSubmit={form.onSubmit(handleSubmit)}>
+        <form onSubmit={handleSubmit}>
           <Stack>
             <TextInput
               label="Email / Username"
               placeholder="Enter email or username"
-              {...form.getInputProps('username')}
               required
+              value={form.username}
+              onChange={handleChangeUsername}
             />
 
             <PasswordInput
               label="Password"
               placeholder="Enter password"
-              {...form.getInputProps('password')}
               required
+              value={form.password}
+              onChange={handleChangePassword}
             />
 
             <Button type="submit" fullWidth>
