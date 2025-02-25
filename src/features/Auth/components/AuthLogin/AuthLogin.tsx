@@ -4,6 +4,30 @@ import { reflect } from '@effector/reflect'
 import { Card, Flex, PasswordInput, Stack, TextInput, Title } from '@mantine/core'
 import { $loginErrors, $loginForm, changedPassword, changedUsername, formSubmitted } from './AuthLogin.store'
 
+export function AuthLogin() {
+  return (
+    <Flex mih="100vh" justify="center" align="center">
+      <Card shadow="sm" padding="lg" radius="md" withBorder miw={360}>
+        <Title order={2} ta="center" mb="md">
+          Login
+        </Title>
+
+        <UIForm>
+          <Stack>
+            <FormUsername label="Email / Username" placeholder="Enter email or username" />
+
+            <FormPassword label="Password" placeholder="Enter password" />
+
+            <FormButtonSubmit type="submit" color="teal" fullWidth>
+              Login
+            </FormButtonSubmit>
+          </Stack>
+        </UIForm>
+      </Card>
+    </Flex>
+  )
+}
+
 const FormUsername = reflect({
   view: TextInput,
   bind: {
@@ -28,27 +52,3 @@ const FormButtonSubmit = reflect({
     onClick: () => formSubmitted(),
   },
 })
-
-export function AuthLogin() {
-  return (
-    <Flex mih="100vh" justify="center" align="center">
-      <Card shadow="sm" padding="lg" radius="md" withBorder miw={360}>
-        <Title order={2} ta="center" mb="md">
-          Login
-        </Title>
-
-        <UIForm>
-          <Stack>
-            <FormUsername label="Email / Username" placeholder="Enter email or username" />
-
-            <FormPassword label="Password" placeholder="Enter password" />
-
-            <FormButtonSubmit type="submit" color="teal" fullWidth>
-              Login
-            </FormButtonSubmit>
-          </Stack>
-        </UIForm>
-      </Card>
-    </Flex>
-  )
-}
