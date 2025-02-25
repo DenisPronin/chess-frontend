@@ -4,9 +4,4 @@ import { InitFeature } from '@/features/Init'
 import { ThemeFeature } from '@/features/Theme/Theme.feature'
 import { IFeature } from '@/types'
 
-export const appFeatures: IFeature[] = [
-  ThemeFeature,
-  InitFeature,
-  AuthFeature,
-  GameFeature,
-]
+export const appFeatures: IFeature[] = [ThemeFeature, InitFeature, AuthFeature, GameFeature]
