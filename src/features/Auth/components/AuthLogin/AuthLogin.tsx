@@ -21,13 +21,11 @@ export function AuthLogin() {
   const onChangeUsername = useUnit(changedUsername)
   const onChangePassword = useUnit(changedPassword)
 
-  const handleChangeUsername = (e: ChangeEvent<HTMLInputElement>) => {
-    onChangeUsername(e.target.value)
-  }
-
-  const handleChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
-    onChangePassword(e.target.value)
-  }
+  const handleChangeField =
+    (changeEvent: (value: string) => void) =>
+    (e: ChangeEvent<HTMLInputElement>) => {
+      changeEvent(e.target.value)
+    }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -49,7 +47,7 @@ export function AuthLogin() {
               placeholder="Enter email or username"
               required
               value={form.username}
-              onChange={handleChangeUsername}
+              onChange={handleChangeField(onChangeUsername)}
             />
 
             <PasswordInput
@@ -57,7 +55,7 @@ export function AuthLogin() {
               placeholder="Enter password"
               required
               value={form.password}
-              onChange={handleChangePassword}
+              onChange={handleChangeField(onChangePassword)}
             />
 
             <Button type="submit" fullWidth>
