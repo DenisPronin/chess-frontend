@@ -1,5 +1,7 @@
+import { UIButton, UIForm } from '@/features/UI'
+import { helperChangeHandler } from '@/utils'
+import { reflect } from '@effector/reflect'
 import {
-  Button,
   Card,
   Flex,
   PasswordInput,
@@ -7,8 +9,6 @@ import {
   TextInput,
   Title,
 } from '@mantine/core'
-import { useUnit } from 'effector-react'
-import { ChangeEvent, FormEvent } from 'react'
 import {
   $loginErrors,
   $loginForm,
@@ -17,23 +17,32 @@ import {
   formSubmitted,
 } from './AuthLogin.store'
 
+const FormUsername = reflect({
+  view: TextInput,
+  bind: {
+    value: $loginForm.map((form) => form.username),
+    onChange: helperChangeHandler<string>(changedUsername),
+    error: $loginErrors.map((errors) => errors.username || null),
+  },
+})
+
+const FormPassword = reflect({
+  view: PasswordInput,
+  bind: {
+    value: $loginForm.map((form) => form.password),
+    onChange: helperChangeHandler<string>(changedPassword),
+    error: $loginErrors.map((errors) => errors.password || null),
+  },
+})
+
+const FormButtonSubmit = reflect({
+  view: UIButton,
+  bind: {
+    onClick: () => formSubmitted(),
+  },
+})
+
 export function AuthLogin() {
-  const form = useUnit($loginForm)
-  const errors = useUnit($loginErrors)
-  const onChangeUsername = useUnit(changedUsername)
-  const onChangePassword = useUnit(changedPassword)
-
-  const handleChangeField =
-    (changeEvent: (value: string) => void) =>
-    (e: ChangeEvent<HTMLInputElement>) => {
-      changeEvent(e.target.value)
-    }
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    formSubmitted()
-  }
-
   return (
     <Flex mih="100vh" justify="center" align="center">
       <Card shadow="sm" padding="lg" radius="md" withBorder miw={360}>
@@ -41,29 +50,20 @@ export function AuthLogin() {
           Login
         </Title>
 
-        <form onSubmit={handleSubmit}>
+        <UIForm>
           <Stack>
-            <TextInput
+            <FormUsername
               label="Email / Username"
               placeholder="Enter email or username"
-              value={form.username}
-              error={errors.username}
-              onChange={handleChangeField(onChangeUsername)}
             />
 
-            <PasswordInput
-              label="Password"
-              placeholder="Enter password"
-              value={form.password}
-              error={errors.password}
-              onChange={handleChangeField(onChangePassword)}
-            />
+            <FormPassword label="Password" placeholder="Enter password" />
 
-            <Button type="submit" fullWidth>
+            <FormButtonSubmit type="submit" color="teal" fullWidth>
               Login
-            </Button>
+            </FormButtonSubmit>
           </Stack>
-        </form>
+        </UIForm>
       </Card>
     </Flex>
   )

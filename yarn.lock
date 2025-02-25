@@ -170,6 +170,11 @@
     "@babel/helper-string-parser" "^7.25.9"
     "@babel/helper-validator-identifier" "^7.25.9"
 
+"@effector/reflect@^9.2.0":
+  version "9.2.0"
+  resolved "https://registry.yarnpkg.com/@effector/reflect/-/reflect-9.2.0.tgz#969921e8ab1ffb21883a09114a992ce7d922e9d3"
+  integrity sha512-jumgC1Ztl28gRmhLei2TX3bF0p1sD/LhAWHWggbmiNcZnpX4K6odTITrFLSu4wKkyP+AX9QpF/wiqLi0njDP1A==
+
 "@esbuild/aix-ppc64@0.24.2":
   version "0.24.2"
   resolved "https://registry.yarnpkg.com/@esbuild/aix-ppc64/-/aix-ppc64-0.24.2.tgz#38848d3e25afe842a7943643cbcd387cc6e13461"
