@@ -4,5 +4,5 @@ import '@mantine/core/styles.css'
 import '@/styles/main.css'
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  return <MantineProvider>{children}</MantineProvider>
+  return <MantineProvider defaultColorScheme="dark">{children}</MantineProvider>
 }
