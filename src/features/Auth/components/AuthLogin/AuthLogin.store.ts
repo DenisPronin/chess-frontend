@@ -14,7 +14,40 @@ export const changedPassword = createEvent<string>()
 $loginForm.on(changedUsername, (state, username) => ({ ...state, username }))
 $loginForm.on(changedPassword, (state, password) => ({ ...state, password }))
 
+export const $loginErrors = createStore<Partial<AuthRequestLogin>>({})
+
+$loginErrors.reset([changedUsername, changedPassword])
+
+const validate = (values: AuthRequestLogin) => {
+  const errors: Partial<AuthRequestLogin> = {}
+  const isUsernameValid = /^[a-zA-Z0-9_]+$/.test(values.username)
+  const isEmailValid = /^\S+@\S+$/.test(values.username)
+  if (!isUsernameValid && !isEmailValid) {
+    errors.username = 'Invalid username or email'
+  }
+  if (values.password.length < 3) {
+    errors.password = 'Password is too short'
+  }
+  return errors
+}
+
+export const formSubmitted = createEvent()
 export const loginFx = createEffect(authLogin)
+
+sample({
+  clock: formSubmitted,
+  source: $loginForm,
+  fn: validate,
+  target: $loginErrors,
+})
+
+sample({
+  clock: formSubmitted,
+  source: { form: $loginForm, errors: $loginErrors },
+  filter: ({ errors }) => Object.keys(errors).length === 0,
+  fn: ({ form }) => form,
+  target: loginFx,
+})
 
 sample({
   clock: loginFx.done,

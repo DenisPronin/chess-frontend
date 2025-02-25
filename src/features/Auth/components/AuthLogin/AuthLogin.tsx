@@ -10,14 +10,16 @@ import {
 import { useUnit } from 'effector-react'
 import { ChangeEvent, FormEvent } from 'react'
 import {
+  $loginErrors,
   $loginForm,
   changedPassword,
   changedUsername,
-  loginFx,
+  formSubmitted,
 } from './AuthLogin.store'
 
 export function AuthLogin() {
   const form = useUnit($loginForm)
+  const errors = useUnit($loginErrors)
   const onChangeUsername = useUnit(changedUsername)
   const onChangePassword = useUnit(changedPassword)
 
@@ -27,10 +29,9 @@ export function AuthLogin() {
       changeEvent(e.target.value)
     }
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    await loginFx({ ...form })
-    console.log('login success')
+    formSubmitted()
   }
 
   return (
@@ -45,16 +46,16 @@ export function AuthLogin() {
             <TextInput
               label="Email / Username"
               placeholder="Enter email or username"
-              required
               value={form.username}
+              error={errors.username}
               onChange={handleChangeField(onChangeUsername)}
             />
 
             <PasswordInput
               label="Password"
               placeholder="Enter password"
-              required
               value={form.password}
+              error={errors.password}
               onChange={handleChangeField(onChangePassword)}
             />
 
