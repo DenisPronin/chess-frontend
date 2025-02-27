@@ -5,5 +5,5 @@ import { authRouter } from './Auth.router'
 export const AuthFeature: IFeature = {
   title: FEATURE_NAME,
 
-  routes: authRouter,
+  router: authRouter,
 }
