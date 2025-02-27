@@ -5,5 +5,5 @@ import { gameRouter } from './Game.router'
 export const GameFeature: IFeature = {
   title: FEATURE_NAME,
 
-  routes: gameRouter,
+  router: gameRouter,
 }

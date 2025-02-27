@@ -1,10 +1,10 @@
 import { FC, ReactNode } from 'react'
-import { IRoute } from './Route.types'
+import { IRouter } from './Route.types'
 
 export interface IFeature {
   title?: string
 
-  routes?: IRoute[]
+  router?: IRouter
 
   provider?: FC<{ children: ReactNode }>
 }
