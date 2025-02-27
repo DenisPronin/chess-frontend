@@ -15,8 +15,10 @@ $loginForm.on(changedUsername, (state, username) => ({ ...state, username }))
 $loginForm.on(changedPassword, (state, password) => ({ ...state, password }))
 
 export const $loginErrors = createStore<Partial<AuthLoginRequest>>({})
-
 $loginErrors.reset([changedUsername, changedPassword])
+
+export const $serverErrors = createStore<string>('')
+$serverErrors.reset([changedUsername, changedPassword])
 
 const validate = (values: AuthLoginRequest) => {
   const errors: Partial<AuthLoginRequest> = {}
@@ -53,4 +55,16 @@ sample({
   clock: loginFx.done,
   fn: ({ result }) => result.token,
   target: setAuthToken,
+})
+
+sample({
+  clock: loginFx.done,
+  fn: () => '',
+  target: $serverErrors,
+})
+
+sample({
+  clock: loginFx.fail,
+  fn: ({ error }) => error.message,
+  target: $serverErrors,
 })

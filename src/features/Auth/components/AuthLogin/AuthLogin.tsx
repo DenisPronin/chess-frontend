@@ -1,8 +1,15 @@
-import { UIButton, UIForm } from '@/features/UI'
+import { UIButton, UIForm, UIText } from '@/features/UI'
 import { helperChangeHandler } from '@/utils'
 import { reflect } from '@effector/reflect'
 import { Card, Flex, PasswordInput, Stack, TextInput, Title } from '@mantine/core'
-import { $loginErrors, $loginForm, changedPassword, changedUsername, formSubmitted } from './AuthLogin.store'
+import {
+  $loginErrors,
+  $loginForm,
+  $serverErrors,
+  changedPassword,
+  changedUsername,
+  formSubmitted,
+} from './AuthLogin.store'
 
 export function AuthLogin() {
   return (
@@ -15,8 +22,9 @@ export function AuthLogin() {
         <UIForm>
           <Stack>
             <FormUsername label="Email / Username" placeholder="Enter email or username" />
-
             <FormPassword label="Password" placeholder="Enter password" />
+
+            <FormTextServerError />
 
             <FormButtonSubmit type="submit" color="teal" fullWidth>
               Login
@@ -50,5 +58,14 @@ const FormButtonSubmit = reflect({
   view: UIButton,
   bind: {
     onClick: () => formSubmitted(),
+  },
+})
+
+const FormTextServerError = reflect({
+  view: UIText,
+  bind: {
+    children: $serverErrors,
+    size: 'sm',
+    c: 'red',
   },
 })
