@@ -20,6 +20,9 @@ $loginErrors.reset([changedUsername, changedPassword])
 export const $serverErrors = createStore<string>('')
 $serverErrors.reset([changedUsername, changedPassword])
 
+export const formSubmitted = createEvent()
+export const loginFx = createEffect(authLogin)
+
 const validate = (values: AuthLoginRequest) => {
   const errors: Partial<AuthLoginRequest> = {}
   const isUsernameValid = /^[a-zA-Z0-9_]+$/.test(values.username)
@@ -33,9 +36,7 @@ const validate = (values: AuthLoginRequest) => {
   return errors
 }
 
-export const formSubmitted = createEvent()
-export const loginFx = createEffect(authLogin)
-
+// submit form and validate
 sample({
   clock: formSubmitted,
   source: $loginForm,
@@ -43,6 +44,7 @@ sample({
   target: $loginErrors,
 })
 
+// login if no errors
 sample({
   clock: formSubmitted,
   source: { form: $loginForm, errors: $loginErrors },
@@ -51,18 +53,21 @@ sample({
   target: loginFx,
 })
 
+// set token if login is successful
 sample({
   clock: loginFx.done,
   fn: ({ result }) => result.token,
   target: setAuthToken,
 })
 
+// reset server errors if login is successful
 sample({
   clock: loginFx.done,
   fn: () => '',
   target: $serverErrors,
 })
 
+// set server errors
 sample({
   clock: loginFx.fail,
   fn: ({ error }) => error.message,
