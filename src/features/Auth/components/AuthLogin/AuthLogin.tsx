@@ -1,40 +1,17 @@
+import { UIButton, UIForm, UIText } from '@/features/UI'
+import { helperChangeHandler } from '@/utils'
+import { reflect } from '@effector/reflect'
+import { Card, Flex, PasswordInput, Stack, TextInput, Title } from '@mantine/core'
 import {
-  Button,
-  Card,
-  Flex,
-  PasswordInput,
-  Stack,
-  TextInput,
-  Title,
-} from '@mantine/core'
-import { useForm } from '@mantine/form'
-
-interface FormValues {
-  username: string
-  password: string
-}
+  $loginErrors,
+  $loginForm,
+  $serverErrors,
+  changedPassword,
+  changedUsername,
+  formSubmitted,
+} from './AuthLogin.store'
 
 export function AuthLogin() {
-  const form = useForm<FormValues>({
-    initialValues: {
-      username: '',
-      password: '',
-    },
-
-    validate: {
-      username: (value) =>
-        /^\S+@\S+$/.test(value) || /^[a-zA-Z0-9_]+$/.test(value)
-          ? null
-          : 'Enter email or username',
-      password: (value) =>
-        value.length >= 6 ? null : 'Password must be at least 6 characters',
-    },
-  })
-
-  const handleSubmit = (values: FormValues) => {
-    console.log('Submitted values:', values)
-  }
-
   return (
     <Flex mih="100vh" justify="center" align="center">
       <Card shadow="sm" padding="lg" radius="md" withBorder miw={360}>
@@ -42,28 +19,53 @@ export function AuthLogin() {
           Login
         </Title>
 
-        <form onSubmit={form.onSubmit(handleSubmit)}>
+        <UIForm>
           <Stack>
-            <TextInput
-              label="Email / Username"
-              placeholder="Enter email or username"
-              {...form.getInputProps('username')}
-              required
-            />
+            <FormUsername label="Email / Username" placeholder="Enter email or username" />
+            <FormPassword label="Password" placeholder="Enter password" />
 
-            <PasswordInput
-              label="Password"
-              placeholder="Enter password"
-              {...form.getInputProps('password')}
-              required
-            />
+            <FormTextServerError />
 
-            <Button type="submit" fullWidth>
+            <FormButtonSubmit type="submit" color="teal" fullWidth>
               Login
-            </Button>
+            </FormButtonSubmit>
           </Stack>
-        </form>
+        </UIForm>
       </Card>
     </Flex>
   )
 }
+
+const FormUsername = reflect({
+  view: TextInput,
+  bind: {
+    value: $loginForm.map((form) => form.username),
+    onChange: helperChangeHandler<string>(changedUsername),
+    error: $loginErrors.map((errors) => errors.username || null),
+  },
+})
+
+const FormPassword = reflect({
+  view: PasswordInput,
+  bind: {
+    value: $loginForm.map((form) => form.password),
+    onChange: helperChangeHandler<string>(changedPassword),
+    error: $loginErrors.map((errors) => errors.password || null),
+  },
+})
+
+const FormButtonSubmit = reflect({
+  view: UIButton,
+  bind: {
+    onClick: () => formSubmitted(),
+  },
+})
+
+const FormTextServerError = reflect({
+  view: UIText,
+  bind: {
+    children: $serverErrors,
+    size: 'sm',
+    c: 'red',
+  },
+})
