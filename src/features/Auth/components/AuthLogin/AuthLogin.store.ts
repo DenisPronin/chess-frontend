@@ -1,9 +1,9 @@
 import { authLogin } from '@/features/Auth/Auth.api'
 import { setAuthToken } from '@/features/Auth/store/Auth.store'
 import { createEffect, createEvent, createStore, sample } from 'effector'
-import { AuthRequestLogin } from '../../Auth.types'
+import { AuthLoginRequest } from '../../Auth.types'
 
-export const $loginForm = createStore<AuthRequestLogin>({
+export const $loginForm = createStore<AuthLoginRequest>({
   username: '',
   password: '',
 })
@@ -14,12 +14,12 @@ export const changedPassword = createEvent<string>()
 $loginForm.on(changedUsername, (state, username) => ({ ...state, username }))
 $loginForm.on(changedPassword, (state, password) => ({ ...state, password }))
 
-export const $loginErrors = createStore<Partial<AuthRequestLogin>>({})
+export const $loginErrors = createStore<Partial<AuthLoginRequest>>({})
 
 $loginErrors.reset([changedUsername, changedPassword])
 
-const validate = (values: AuthRequestLogin) => {
-  const errors: Partial<AuthRequestLogin> = {}
+const validate = (values: AuthLoginRequest) => {
+  const errors: Partial<AuthLoginRequest> = {}
   const isUsernameValid = /^[a-zA-Z0-9_]+$/.test(values.username)
   const isEmailValid = /^\S+@\S+$/.test(values.username)
   if (!isUsernameValid && !isEmailValid) {
