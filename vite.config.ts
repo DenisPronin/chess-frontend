@@ -5,16 +5,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    react({
-      babel: {
-        plugins: ['effector/babel-plugin'],
-        babelrc: true,
-        configFile: true,
-      },
-    }),
-    tsconfigPaths(),
-  ],
+  plugins: [react(), tsconfigPaths()],
   resolve: {
     alias: [{ find: '@', replacement: path.resolve(__dirname, './src') }],
   },

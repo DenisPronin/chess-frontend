@@ -10,11 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@effector/reflect": "^9.2.0",
     "@mantine/core": "^7.17.0",
     "@mantine/hooks": "^7.17.0",
-    "effector": "^23.3.0",
-    "effector-react": "^23.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.2.0"
@@ -25,7 +22,6 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
-    "effector-logger": "^0.15.0",
     "eslint": "^9.20.1",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
