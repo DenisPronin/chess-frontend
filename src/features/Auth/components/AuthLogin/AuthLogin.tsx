@@ -1,9 +1,10 @@
-import { useAuthStore } from '@/features/Auth/store/Auth.store'
 import { UIText } from '@/features/UI'
 import { Button, Card, PasswordInput, Stack, TextInput, Title } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useNavigate } from 'react-router-dom'
+import { validatePassword, validateUserNameOrEmail } from '../../Auth.model'
 import { AuthLoginRequest } from '../../Auth.types'
+import { useAuthStore } from '../../store/Auth.store'
 
 export function AuthLogin() {
   const navigate = useNavigate()
@@ -17,8 +18,8 @@ export function AuthLogin() {
       password: '',
     },
     validate: {
-      username: (value) => (value.length < 3 ? 'Минимум 3 символа' : null),
-      password: (value) => (value.length < 3 ? 'Password is too short' : null),
+      username: validateUserNameOrEmail,
+      password: validatePassword,
     },
   })
 
