@@ -1,4 +1,4 @@
-import { AuthLoginRequest, AuthLoginResponse } from '@/features/Auth/Auth.types'
+import { AuthLoginRequest, AuthLoginResponse } from './Auth.types'
 
 export async function authLogin(request: AuthLoginRequest): Promise<AuthLoginResponse> {
   const response = await fetch('http://localhost:8080/api/v1/login', {
