@@ -7,7 +7,9 @@ import { AuthLoginRequest } from '../../Auth.types'
 
 export function AuthLogin() {
   const navigate = useNavigate()
-  const { login, loginError, isLoginLoading } = useAuthStore()
+  const isLoginLoading = useAuthStore((state) => state.isLoginLoading)
+  const loginError = useAuthStore((state) => state.loginError)
+  const login = useAuthStore((state) => state.login)
 
   const form = useForm<AuthLoginRequest>({
     initialValues: {

@@ -1,10 +1,12 @@
-import { ReactNode } from 'react'
+import { ReactNode, useMemo } from 'react'
 import { Navigate } from 'react-router-dom'
+import { useAuthStore } from '../../store/Auth.store'
 
 export function AuthProtected({ children }: { children: ReactNode }) {
-  const isLoggedIn = false
+  const token = useAuthStore((state) => state.token)
 
-  // if not logged in, redirect to login page
+  const isLoggedIn = useMemo(() => !!token, [token])
+
   if (!isLoggedIn) {
     return <Navigate to="/auth/login" replace />
   }
