@@ -1,6 +1,7 @@
 import { IRouter } from '@/types'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { appFeatures } from './App.features'
+import { AuthProtected } from './imports/App.components'
 
 function getRouters() {
   const routers: IRouter[] = []
@@ -22,7 +23,15 @@ export function AppRouter() {
         <Route>
           {routers.map((router) => {
             const routes = router.routes.map((route) => {
-              return <Route key={route.path} path={route.path} element={<route.element />} />
+              const element = route.private ? (
+                <AuthProtected>
+                  <route.element />
+                </AuthProtected>
+              ) : (
+                <route.element />
+              )
+
+              return <Route key={route.path} path={route.path} element={element} />
             })
 
             if (!router.layout) {
