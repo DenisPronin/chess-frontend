@@ -1,7 +1,7 @@
-import { AuthRegister } from '@/features/Auth/components/AuthRegister/AuthRegister'
 import { IRouter } from '@/types'
 import { AuthLayout } from './components/AuthLayout/AuthLayout'
 import { AuthLogin } from './components/AuthLogin/AuthLogin'
+import { AuthRegister } from './components/AuthRegister/AuthRegister'
 
 export const authRouter: IRouter = {
   layout: {

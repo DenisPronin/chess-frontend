@@ -1,6 +1,6 @@
-import { FEATURE_NAME } from '@/features/Theme/Theme.model'
-import { ThemeProvider } from '@/features/Theme/Theme.provider'
 import { IFeature } from '@/types'
+import { FEATURE_NAME } from './Theme.model'
+import { ThemeProvider } from './Theme.provider'
 
 export const ThemeFeature: IFeature = {
   title: FEATURE_NAME,

@@ -1,6 +1,6 @@
-import { FEATURE_NAME } from '@/features/Init/Init.model'
-import { InitProvider } from '@/features/Init/Init.provider'
 import { IFeature } from '@/types'
+import { FEATURE_NAME } from './Init.model'
+import { InitProvider } from './Init.provider'
 
 export const InitFeature: IFeature = {
   title: FEATURE_NAME,
