@@ -6,7 +6,7 @@ export const gameRouter: IRouter = {
     {
       path: 'game',
       element: GamePage,
-      private: false,
+      private: true,
     },
   ],
 }
