@@ -25,6 +25,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       if (err instanceof Error) {
         set({ loginError: err.message })
       }
+      throw err
     } finally {
       set({ isLoginLoading: false })
     }

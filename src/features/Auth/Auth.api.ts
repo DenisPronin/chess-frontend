@@ -7,9 +7,11 @@ export async function authLogin(request: AuthLoginRequest): Promise<AuthLoginRes
     headers: { 'Content-Type': 'application/json' },
   })
 
+  const json = await response.json()
+
   if (!response.ok) {
-    throw new Error('Login failed')
+    throw new Error(json.message)
   }
 
-  return response.json()
+  return json
 }
