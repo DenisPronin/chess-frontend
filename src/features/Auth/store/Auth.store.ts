@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { authLogin } from '../Auth.api'
+import { apiAuthLogin } from '../Auth.api'
 import { FEATURE_NAME } from '../Auth.model'
 import { AuthLoginRequest } from '../Auth.types'
 
@@ -22,7 +22,7 @@ export const useAuthStore = create<AuthState>()(
       login: async (request: AuthLoginRequest) => {
         set({ isLoginLoading: true })
         try {
-          const { token } = await authLogin(request)
+          const { token } = await apiAuthLogin(request)
           set({ token, loginError: null })
         } catch (err: unknown) {
           if (err instanceof Error) {
