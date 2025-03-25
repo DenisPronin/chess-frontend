@@ -1,8 +1,8 @@
-import { appEnv, envVersion } from '@/features/Env'
+import { showVersion } from '@/features/Env'
 import { ReactNode } from 'react'
+
+showVersion()
 
 export function InitProvider({ children }: { children: ReactNode }) {
   return <>{children}</>
 }
-
-console.info(`App version: ${envVersion} (${appEnv})`)
