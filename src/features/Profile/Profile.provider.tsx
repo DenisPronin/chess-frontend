@@ -1,5 +1,5 @@
+import { selectAuthIsLoggedIn, useAuthStore } from '@/app/imports/App.store'
 import { ReactNode, useEffect } from 'react'
-import { selectAuthIsLoggedIn, useAuthStore } from '../Auth/store/Auth.store'
 import { useProfileStore } from './store/Profile.store'
 
 export function ProfileProvider({ children }: { children: ReactNode }) {
