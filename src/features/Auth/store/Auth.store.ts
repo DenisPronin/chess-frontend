@@ -1,6 +1,7 @@
+import { api } from '@/features/Network'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { authLogin } from '../Auth.api'
+import { apiAuthLogin } from '../Auth.api'
 import { FEATURE_NAME } from '../Auth.model'
 import { AuthLoginRequest } from '../Auth.types'
 
@@ -22,8 +23,9 @@ export const useAuthStore = create<AuthState>()(
       login: async (request: AuthLoginRequest) => {
         set({ isLoginLoading: true })
         try {
-          const { token } = await authLogin(request)
+          const { token } = await apiAuthLogin(request)
           set({ token, loginError: null })
+          api.setToken(token)
         } catch (err: unknown) {
           if (err instanceof Error) {
             set({ loginError: err.message })
@@ -34,11 +36,21 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      logout: () => set({ token: null }),
+      logout: () => {
+        set({ token: null })
+        api.setToken(null)
+      },
     }),
     {
       name: FEATURE_NAME,
       partialize: (state) => ({ token: state.token }),
+      onRehydrateStorage: () => (state, error) => {
+        if (error) return
+
+        if (state?.token) {
+          api.setToken(state.token)
+        }
+      },
     }
   )
 )
