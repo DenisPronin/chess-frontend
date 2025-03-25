@@ -44,6 +44,13 @@ export const useAuthStore = create<AuthState>()(
     {
       name: FEATURE_NAME,
       partialize: (state) => ({ token: state.token }),
+      onRehydrateStorage: () => (state, error) => {
+        if (error) return
+
+        if (state?.token) {
+          api.setToken(state.token)
+        }
+      },
     }
   )
 )
