@@ -1,3 +1,4 @@
+import { api } from '@/features/Network'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { apiAuthLogin } from '../Auth.api'
@@ -24,6 +25,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           const { token } = await apiAuthLogin(request)
           set({ token, loginError: null })
+          api.setToken(token)
         } catch (err: unknown) {
           if (err instanceof Error) {
             set({ loginError: err.message })
@@ -34,7 +36,10 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      logout: () => set({ token: null }),
+      logout: () => {
+        set({ token: null })
+        api.setToken(null)
+      },
     }),
     {
       name: FEATURE_NAME,

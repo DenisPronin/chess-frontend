@@ -2,11 +2,11 @@ import { ErrorNetwork, Nullish } from '@/types'
 import ky, { KyInstance, Options } from 'ky'
 
 class NetworkService {
-  baseUrl: string
+  readonly baseUrl: string
 
-  token: Nullish<string> = null
+  private token: Nullish<string> = null
 
-  instance: KyInstance
+  private readonly instance: KyInstance
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl
@@ -43,7 +43,7 @@ class NetworkService {
     return headers
   }
 
-  setToken(token: string) {
+  setToken(token: Nullish<string>) {
     this.token = token
     if (!this.instance) return
 
