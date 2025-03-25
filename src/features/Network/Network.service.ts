@@ -6,7 +6,7 @@ class NetworkService {
 
   private token: Nullish<string> = null
 
-  private readonly instance: KyInstance
+  private instance: KyInstance
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl
@@ -47,7 +47,7 @@ class NetworkService {
     this.token = token
     if (!this.instance) return
 
-    this.instance.extend({
+    this.instance = this.instance.extend({
       headers: this.getHeaders(),
     })
   }

@@ -6,7 +6,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
 
   return (
     <>
-      {providers.reduce((memo, provider) => {
+      {providers.reverse().reduce((memo, provider) => {
         return createElement(provider!, null, memo)
       }, children)}
     </>

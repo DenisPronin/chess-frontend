@@ -54,3 +54,5 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 )
+
+export const selectAuthIsLoggedIn = (state: AuthState) => !!state.token
