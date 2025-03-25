@@ -13,5 +13,5 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
     getProfile()
   }, [getProfile, isLoggedIn])
 
-  return <div>{children}</div>
+  return <>{children}</>
 }
