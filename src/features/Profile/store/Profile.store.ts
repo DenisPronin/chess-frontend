@@ -1,5 +1,5 @@
+import { createStore } from '@/features/Store'
 import { Nullish } from '@/types'
-import { create } from 'zustand'
 import { apiProfileFetch } from '../Profile.api'
 import { ProfileUser } from '../Profile.types'
 
@@ -12,26 +12,32 @@ type ProfileState = {
   getProfile: () => Promise<void>
 }
 
-export const useProfileStore = create<ProfileState>()((set, get) => ({
-  data: null,
-  isLoading: false,
-  isSuccess: false,
-  error: null,
+export const useProfileStore = createStore<ProfileState>()(
+  (set, get) => ({
+    data: null,
+    isLoading: false,
+    isSuccess: false,
+    error: null,
 
-  getProfile: async () => {
-    const { isLoading } = get()
-    if (isLoading) return
+    getProfile: async () => {
+      const { isLoading } = get()
+      if (isLoading) return
 
-    set({ isLoading: true })
-    try {
-      const response = await apiProfileFetch()
-      set({ data: response, error: null, isSuccess: true })
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        set({ error: err.message })
+      set({ isLoading: true })
+      try {
+        const response = await apiProfileFetch()
+        set({ data: response, error: null, isSuccess: true })
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          set({ error: err.message })
+        }
+      } finally {
+        set({ isLoading: false })
       }
-    } finally {
-      set({ isLoading: false })
-    }
-  },
-}))
+    },
+  }),
+  {
+    name: 'useProfileStore',
+    resettable: true,
+  }
+)
