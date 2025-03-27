@@ -8,6 +8,8 @@ class NetworkService {
 
   private instance: KyInstance
 
+  private logoutCallback: Nullish<() => void> = null
+
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl
 
@@ -21,6 +23,14 @@ class NetworkService {
             if (response) {
               const json = (await response.json()) as ErrorNetwork
               error.message = json.message
+            }
+
+            return error
+          },
+          (error) => {
+            const { response } = error
+            if (response.status === 401) {
+              this.logoutCallback?.()
             }
 
             return error
@@ -50,6 +60,10 @@ class NetworkService {
     this.instance = this.instance.extend({
       headers: this.getHeaders(),
     })
+  }
+
+  setLogoutCallback(callback: () => void) {
+    this.logoutCallback = callback
   }
 
   async get<T>(url: string, options?: Options) {

@@ -8,8 +8,8 @@ type AuthState = {
   token: string | null
   loginError: string | null
   isLoginLoading: boolean
+
   login: (values: AuthLoginRequest) => Promise<void>
-  logout: () => void
 }
 
 export const useAuthStore = createStore<AuthState>()(
@@ -33,11 +33,6 @@ export const useAuthStore = createStore<AuthState>()(
         set({ isLoginLoading: false })
       }
     },
-
-    logout: () => {
-      resetAllStores()
-      api.setToken(null)
-    },
   }),
   {
     name: FEATURE_NAME,
@@ -55,5 +50,12 @@ export const useAuthStore = createStore<AuthState>()(
     },
   }
 )
+
+export const logout = () => {
+  resetAllStores()
+  api.setToken(null)
+}
+
+api.setLogoutCallback(logout)
 
 export const selectAuthIsLoggedIn = (state: AuthState) => !!state.token
