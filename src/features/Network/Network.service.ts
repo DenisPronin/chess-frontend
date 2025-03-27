@@ -18,6 +18,7 @@ class NetworkService {
       headers: this.getHeaders(),
       hooks: {
         beforeError: [
+          // common error handling
           async (error) => {
             const { response } = error
             if (response) {
@@ -27,6 +28,7 @@ class NetworkService {
 
             return error
           },
+          // logout on 401
           (error) => {
             const { response } = error
             if (response.status === 401) {
