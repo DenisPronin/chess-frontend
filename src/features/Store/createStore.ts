@@ -1,4 +1,4 @@
-import { appEnv } from '@/features/Env'
+import { appEnv, EnvironmentType } from '@/features/Env'
 import { create, StateCreator } from 'zustand'
 import { persist, PersistOptions } from 'zustand/middleware'
 
@@ -31,7 +31,7 @@ export const createStore = <T>() => {
       })
     }
 
-    if (options?.hasLogs && appEnv === 'development') {
+    if (options?.hasLogs && appEnv === EnvironmentType.Local) {
       store.subscribe((state) => {
         console.info(options.name, state)
       })
