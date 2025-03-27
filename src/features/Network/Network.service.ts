@@ -6,7 +6,9 @@ class NetworkService {
 
   private token: Nullish<string> = null
 
-  private readonly instance: KyInstance
+  private instance: KyInstance
+
+  private logoutCallback: Nullish<() => void> = null
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl
@@ -16,11 +18,21 @@ class NetworkService {
       headers: this.getHeaders(),
       hooks: {
         beforeError: [
+          // common error handling
           async (error) => {
             const { response } = error
             if (response) {
               const json = (await response.json()) as ErrorNetwork
               error.message = json.message
+            }
+
+            return error
+          },
+          // logout on 401
+          (error) => {
+            const { response } = error
+            if (response.status === 401) {
+              this.logoutCallback?.()
             }
 
             return error
@@ -47,9 +59,13 @@ class NetworkService {
     this.token = token
     if (!this.instance) return
 
-    this.instance.extend({
+    this.instance = this.instance.extend({
       headers: this.getHeaders(),
     })
+  }
+
+  setLogoutCallback(callback: () => void) {
+    this.logoutCallback = callback
   }
 
   async get<T>(url: string, options?: Options) {
