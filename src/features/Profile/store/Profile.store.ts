@@ -1,4 +1,4 @@
-import { createStore } from '@/features/Store'
+import { createAsyncAction, createStore } from '@/features/Store'
 import { Nullish } from '@/types'
 import { apiProfileFetch } from '../Profile.api'
 import { ProfileUser } from '../Profile.types'
@@ -19,22 +19,10 @@ export const useProfileStore = createStore<ProfileState>()(
     isSuccess: false,
     error: null,
 
-    getProfile: async () => {
-      const { isLoading } = get()
-      if (isLoading) return
-
-      set({ isLoading: true })
-      try {
-        const response = await apiProfileFetch()
-        set({ data: response, error: null, isSuccess: true })
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          set({ error: err.message })
-        }
-      } finally {
-        set({ isLoading: false })
-      }
-    },
+    getProfile: createAsyncAction<ProfileUser, void>(set, get, {
+      fetchFunction: apiProfileFetch,
+      dataKey: 'data',
+    }),
   }),
   {
     name: 'useProfileStore',

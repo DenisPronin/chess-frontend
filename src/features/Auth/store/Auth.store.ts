@@ -1,38 +1,33 @@
 import { api } from '@/features/Network'
-import { createStore, resetAllStores } from '@/features/Store'
+import { createAsyncAction, createStore, resetAllStores } from '@/features/Store'
 import { apiAuthLogin } from '../Auth.api'
 import { FEATURE_NAME } from '../Auth.model'
 import { AuthLoginRequest } from '../Auth.types'
 
 type AuthState = {
   token: string | null
-  loginError: string | null
-  isLoginLoading: boolean
+  error: string | null
+  isLoading: boolean
+  isSuccess: boolean
 
   login: (values: AuthLoginRequest) => Promise<void>
 }
 
 export const useAuthStore = createStore<AuthState>()(
-  (set) => ({
+  (set, get) => ({
     token: null,
-    loginError: null,
-    isLoginLoading: false,
+    error: null,
+    isLoading: false,
+    isSuccess: false,
 
-    login: async (request: AuthLoginRequest) => {
-      set({ isLoginLoading: true })
-      try {
+    login: createAsyncAction<string, AuthLoginRequest, 'token'>(set, get, {
+      dataKey: 'token',
+      fetchFunction: async (request: AuthLoginRequest) => {
         const { token } = await apiAuthLogin(request)
-        set({ token, loginError: null })
         api.setToken(token)
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          set({ loginError: err.message })
-        }
-        throw err
-      } finally {
-        set({ isLoginLoading: false })
-      }
-    },
+        return token
+      },
+    }),
   }),
   {
     name: FEATURE_NAME,
