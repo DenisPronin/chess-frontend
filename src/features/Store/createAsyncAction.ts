@@ -1,32 +1,41 @@
-type AsyncState<T, DataKey extends string = 'data'> = {
-  isLoading: boolean
-  isSuccess: boolean
-  error: string | null
-} & {
-  [key in DataKey]: T | null
+import { StoreApi, UseBoundStore } from 'zustand'
+import { StateLoadableSlice } from '../../types'
+
+type StateWithSlice<SliceKey extends string | number | symbol, Response> = {
+  [K in SliceKey]: StateLoadableSlice<Response>
 }
 
-export function createAsyncAction<Response, Request, DataKey extends string = 'data'>(
-  set: (partial: Partial<AsyncState<Response, DataKey>>) => void,
-  get: () => AsyncState<Response, DataKey>,
-  options: {
-    fetchFunction: (request: Request) => Promise<Response>
-    dataKey: DataKey
-  }
-): (request: Request) => Promise<void> {
-  return async (request: Request) => {
-    if (get().isLoading) return
+interface AsyncActionOptions<Response, Request> {
+  fetchFunction: (request: Request) => Promise<Response>
+}
 
-    set({ isLoading: true } as Partial<AsyncState<Response, DataKey>>)
+export function createAsyncAction<
+  State extends StateWithSlice<SliceKey, Response>,
+  Response,
+  Request,
+  SliceKey extends keyof State,
+>(store: UseBoundStore<StoreApi<State>>, sliceKey: SliceKey, options: AsyncActionOptions<Response, Request>) {
+  return async (request: Request) => {
+    const { fetchFunction } = options
+    const prevState = store.getState()
+    if (prevState[sliceKey].isLoading) return
+
+    store.setState((state) => ({
+      ...state,
+      [sliceKey]: { ...state[sliceKey], isLoading: true, error: null },
+    }))
+
     try {
-      const data = await options.fetchFunction(request)
-      set({ [options.dataKey]: data, isSuccess: true, error: null } as Partial<AsyncState<Response, DataKey>>)
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        set({ error: err.message } as Partial<AsyncState<Response, DataKey>>)
-      }
-    } finally {
-      set({ isLoading: false } as Partial<AsyncState<Response, DataKey>>)
+      const data = await fetchFunction(request)
+      store.setState((state) => ({
+        ...state,
+        [sliceKey]: { data, isLoading: false, isSuccess: true, error: null },
+      }))
+    } catch (error) {
+      store.setState((state) => ({
+        ...state,
+        [sliceKey]: { ...state[sliceKey], data: null, isLoading: false, isSuccess: false, error: String(error) },
+      }))
     }
   }
 }

@@ -1,31 +1,23 @@
-import { createAsyncAction, createStore } from '@/features/Store'
-import { Nullish } from '@/types'
+import { createAsyncAction, createLoadableData, createStore } from '@/features/Store'
+import { StateLoadableSlice } from '@/types'
 import { apiProfileFetch } from '../Profile.api'
 import { ProfileUser } from '../Profile.types'
 
 type ProfileState = {
-  data: Nullish<ProfileUser>
-  isLoading: boolean
-  isSuccess: boolean
-  error: string | null
-
-  getProfile: () => Promise<void>
+  profile: StateLoadableSlice<ProfileUser>
 }
 
 export const useProfileStore = createStore<ProfileState>()(
-  (set, get) => ({
-    data: null,
-    isLoading: false,
-    isSuccess: false,
-    error: null,
-
-    getProfile: createAsyncAction<ProfileUser, void>(set, get, {
-      fetchFunction: apiProfileFetch,
-      dataKey: 'data',
-    }),
+  () => ({
+    profile: createLoadableData<ProfileUser>(),
   }),
   {
     name: 'useProfileStore',
     resettable: true,
+    hasLogs: true,
   }
 )
+
+export const getProfile = createAsyncAction<ProfileState, ProfileUser, void, 'profile'>(useProfileStore, 'profile', {
+  fetchFunction: apiProfileFetch,
+})

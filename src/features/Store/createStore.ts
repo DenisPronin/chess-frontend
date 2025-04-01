@@ -1,5 +1,5 @@
 import { appEnv, EnvironmentType } from '@/features/Env'
-import { create, StateCreator } from 'zustand'
+import { create, StateCreator, StoreApi, UseBoundStore } from 'zustand'
 import { persist, PersistOptions } from 'zustand/middleware'
 
 const storeResetFns = new Set<() => void>()
@@ -18,7 +18,7 @@ interface StoreOptions<T> {
 }
 
 export const createStore = <T>() => {
-  return (stateCreator: StateCreator<T>, options?: StoreOptions<T>) => {
+  return (stateCreator: StateCreator<T>, options?: StoreOptions<T>): UseBoundStore<StoreApi<T>> => {
     let store = create(stateCreator)
     if (options?.persistOptions) {
       store = create(persist(stateCreator, options.persistOptions))
