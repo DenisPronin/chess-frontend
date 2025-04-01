@@ -1,10 +1,3 @@
-import { AuthLogout } from '@/app/imports/App.components'
-
 export function GamePage() {
-  return (
-    <div>
-      game
-      <AuthLogout />
-    </div>
-  )
+  return <div>game</div>
 }
