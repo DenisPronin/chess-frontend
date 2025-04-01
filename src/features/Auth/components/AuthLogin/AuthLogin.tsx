@@ -26,7 +26,7 @@ export function AuthLogin() {
   const handleSubmit = async (values: AuthLoginRequest) => {
     try {
       await login(values)
-      navigate('/game')
+      navigate('/app/game')
     } catch {
       return
     }
