@@ -14,7 +14,6 @@ export const useProfileStore = createStore<ProfileState>()(
   {
     name: 'useProfileStore',
     resettable: true,
-    hasLogs: true,
   }
 )
 
