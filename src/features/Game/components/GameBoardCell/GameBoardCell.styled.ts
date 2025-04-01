@@ -1,5 +1,6 @@
+import { UIText } from '@/features/UI'
 import { Colors } from '@/variables'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { GameCellColor } from '../../Game.types'
 
 export const Cell = styled.div<{ $color: GameCellColor }>`
@@ -8,4 +9,26 @@ export const Cell = styled.div<{ $color: GameCellColor }>`
   }};
   height: 120px;
   width: 120px;
+  position: relative;
+`
+
+const CellTextStyle = css<{ $color: GameCellColor }>`
+  position: absolute;
+  font-weight: bold;
+  line-height: 1;
+  user-select: none;
+  color: ${({ $color }) =>
+    $color === GameCellColor.WHITE ? Colors.BLACK_CELL : Colors.WHITE_CELL};
+`
+
+export const CellNumber = styled(UIText)<{ $color: GameCellColor }>`
+  ${CellTextStyle}
+  left: 5%;
+  top: 5%;
+`
+
+export const CellLetter = styled.div<{ $color: GameCellColor }>`
+  ${CellTextStyle}
+  right: 5%;
+  bottom: 5%;
 `
