@@ -46,7 +46,11 @@ export function AuthLogin() {
             {...form.getInputProps('username')}
           />
 
-          <PasswordInput label="Password" placeholder="Enter password" {...form.getInputProps('password')} />
+          <PasswordInput
+            label="Password"
+            placeholder="Enter password"
+            {...form.getInputProps('password')}
+          />
 
           <UIText size="sm" c="red">
             {loginError}

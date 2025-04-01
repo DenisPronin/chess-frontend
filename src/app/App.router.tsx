@@ -39,7 +39,11 @@ export function AppRouter() {
             }
 
             return (
-              <Route key={router.layout.path} path={router.layout.path} element={<router.layout.element />}>
+              <Route
+                key={router.layout.path}
+                path={router.layout.path}
+                element={<router.layout.element />}
+              >
                 {routes}
               </Route>
             )

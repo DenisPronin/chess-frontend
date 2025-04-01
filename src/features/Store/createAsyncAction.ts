@@ -14,7 +14,11 @@ export function createAsyncAction<
   Response,
   Request,
   SliceKey extends keyof State,
->(store: UseBoundStore<StoreApi<State>>, sliceKey: SliceKey, options: AsyncActionOptions<Response, Request>) {
+>(
+  store: UseBoundStore<StoreApi<State>>,
+  sliceKey: SliceKey,
+  options: AsyncActionOptions<Response, Request>
+) {
   return async (request: Request) => {
     const { fetchFunction } = options
     const prevState = store.getState()
@@ -34,7 +38,13 @@ export function createAsyncAction<
     } catch (error) {
       store.setState((state) => ({
         ...state,
-        [sliceKey]: { ...state[sliceKey], data: null, isLoading: false, isSuccess: false, error: String(error) },
+        [sliceKey]: {
+          ...state[sliceKey],
+          data: null,
+          isLoading: false,
+          isSuccess: false,
+          error: String(error),
+        },
       }))
     }
   }

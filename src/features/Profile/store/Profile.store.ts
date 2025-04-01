@@ -18,6 +18,10 @@ export const useProfileStore = createStore<ProfileState>()(
   }
 )
 
-export const getProfile = createAsyncAction<ProfileState, ProfileUser, void, 'profile'>(useProfileStore, 'profile', {
-  fetchFunction: apiProfileFetch,
-})
+export const getProfile = createAsyncAction<ProfileState, ProfileUser, void, 'profile'>(
+  useProfileStore,
+  'profile',
+  {
+    fetchFunction: apiProfileFetch,
+  }
+)
