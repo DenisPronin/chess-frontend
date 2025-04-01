@@ -22,13 +22,13 @@ const CellTextStyle = css<{ $color: GameCellColor }>`
 `
 
 export const CellNumber = styled(UIText)<{ $color: GameCellColor }>`
-  ${CellTextStyle}
+  ${CellTextStyle};
   left: 5%;
   top: 5%;
 `
 
 export const CellLetter = styled.div<{ $color: GameCellColor }>`
-  ${CellTextStyle}
+  ${CellTextStyle};
   right: 5%;
   bottom: 5%;
 `
