@@ -5,6 +5,22 @@ export enum GameColor {
   WHITE = 'white',
 }
 
+export enum GameFenSymbols {
+  p = 'p',
+  P = 'P',
+  r = 'r',
+  R = 'R',
+  n = 'n',
+  N = 'N',
+  b = 'b',
+  B = 'B',
+  q = 'q',
+  Q = 'Q',
+  k = 'k',
+  K = 'K',
+  Empty = '-',
+}
+
 export enum GameFieldLetters {
   A = 'a',
   B = 'b',

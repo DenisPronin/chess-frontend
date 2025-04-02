@@ -1,6 +1,6 @@
 import { createStore } from '@/features/Store'
-import { FEATURE_NAME, initGameField, initialGameFigures } from '../Game.model'
 import { GameState } from '../Game.types'
+import { FEATURE_NAME, initGameField, initialGameFigures } from '../models/Game.model'
 
 export const useGameStore = createStore<GameState>()(
   () => ({

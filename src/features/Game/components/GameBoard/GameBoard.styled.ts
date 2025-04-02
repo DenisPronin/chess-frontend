@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { GAME_FIELD_SIZE } from '../../Game.model'
+import { GAME_FIELD_SIZE } from '../../models/Game.model'
 
 export const Board = styled.div`
   display: grid;
