@@ -1,3 +1,5 @@
+import { GameBoard } from '../GameBoard/GameBoard'
+
 export function GamePage() {
-  return <div>game</div>
+  return <GameBoard />
 }
