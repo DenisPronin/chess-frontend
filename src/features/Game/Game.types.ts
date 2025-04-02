@@ -46,6 +46,11 @@ export interface GameFigureState {
   color: GameColor
 }
 
+export interface GameSelectedCell {
+  row: number
+  col: GameFieldLetters
+}
+
 export interface GameCell {
   color: GameColor
   row: number
@@ -59,4 +64,5 @@ export interface GameField {
 
 export interface GameState {
   field: GameField
+  selectedCell: Nullish<GameSelectedCell>
 }

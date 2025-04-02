@@ -3,8 +3,16 @@ import { Colors } from '@/variables'
 import styled, { css } from 'styled-components'
 import { GameColor } from '../../Game.types'
 
-export const Cell = styled.div<{ $color: GameColor }>`
-  background-color: ${({ $color }) => {
+export const Cell = styled.div<{ $color: GameColor; $isSelected: boolean }>`
+  background-color: ${({ $color, $isSelected }) => {
+    if ($isSelected) {
+      if ($color === GameColor.WHITE) {
+        return Colors.SELECTED_WHITE_CELL
+      }
+
+      return Colors.SELECTED_BLACK_CELL
+    }
+
     return $color === GameColor.WHITE ? Colors.WHITE_CELL : Colors.BLACK_CELL
   }};
   height: 120px;
@@ -13,6 +21,7 @@ export const Cell = styled.div<{ $color: GameColor }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 `
 
 const CellTextStyle = css<{ $color: GameColor }>`
