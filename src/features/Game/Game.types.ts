@@ -1,4 +1,6 @@
-export enum GameCellColor {
+import { Nullish } from '@/types'
+
+export enum GameColor {
   BLACK = 'black',
   WHITE = 'white',
 }
@@ -14,10 +16,25 @@ export enum GameFieldLetters {
   H = 'h',
 }
 
+export enum GameFigureTypes {
+  Pawn = 'pawn',
+  Rook = 'rook',
+  Knight = 'knight',
+  Bishop = 'bishop',
+  Queen = 'queen',
+  King = 'king',
+}
+
+export interface GameFigureState {
+  type: GameFigureTypes
+  color: GameColor
+}
+
 export interface GameCell {
-  color: GameCellColor
+  color: GameColor
   row: number
   col: GameFieldLetters
+  figure: Nullish<GameFigureState>
 }
 
 export interface GameField {

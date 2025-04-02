@@ -1,4 +1,5 @@
 import { GameCell, GameFieldLetters } from '../../Game.types'
+import { GameFigure } from '../GameFigure/GameFigure'
 import * as Styled from './GameBoardCell.styled'
 
 export function GameBoardCell({ cell }: { cell: GameCell }) {
@@ -9,6 +10,8 @@ export function GameBoardCell({ cell }: { cell: GameCell }) {
       )}
 
       {cell.row === 1 && <Styled.CellLetter $color={cell.color}>{cell.col}</Styled.CellLetter>}
+
+      {cell.figure && <GameFigure figure={cell.figure} />}
     </Styled.Cell>
   )
 }
