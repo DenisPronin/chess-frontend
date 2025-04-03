@@ -1,10 +1,13 @@
-import { GameCell, GameColor, GameField, GameFieldLetters } from '../Game.types'
+import { Nullish } from '@/types'
+import { GameCell, GameColor, GameField, GameFieldLetters, GameFigureState } from '../Game.types'
 import { parseFen } from './GameFenParser'
 import { fenSymbolToFigureMap } from './GameFigures.model'
 
 export const FEATURE_NAME = 'Game'
 
 export const GAME_FIELD_SIZE = 8
+
+export const initialGameFigures = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
 
 export function initGameField(figuresFen: string): GameField {
   const cells: GameCell[][] = []
@@ -66,4 +69,22 @@ export function restorePosition(field: GameField, fen: string) {
   return { cells: newCells }
 }
 
-export const initialGameFigures = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
+export const updateCellFigure = (
+  field: GameField,
+  row: number,
+  col: GameFieldLetters,
+  figure: Nullish<GameFigureState>
+): GameField => {
+  return {
+    ...field,
+    cells: field.cells.map((rowItem) => {
+      return rowItem.map((cellItem) => {
+        if (cellItem.row === row && cellItem.col === col) {
+          return { ...cellItem, figure }
+        }
+
+        return cellItem
+      })
+    }),
+  }
+}

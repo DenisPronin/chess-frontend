@@ -58,11 +58,24 @@ export interface GameCell {
   figure: Nullish<GameFigureState>
 }
 
+export interface GameCellWithFigure {
+  row: number
+  col: GameFieldLetters
+  figure: GameFigureState
+}
+
 export interface GameField {
   cells: GameCell[][]
+}
+
+export interface GameMove {
+  from: { row: number; col: GameFieldLetters }
+  to: { row: number; col: GameFieldLetters }
+  figure: GameFigureState
 }
 
 export interface GameState {
   field: GameField
   selectedCell: Nullish<GameSelectedCell>
+  moves: GameMove[]
 }
