@@ -1,12 +1,18 @@
 import { isAppEnvLocal } from '@/features/Env'
 import { createStore } from '@/features/Store'
-import { GameFieldLetters, GameState } from '../Game.types'
-import { FEATURE_NAME, initGameField, initialGameFigures } from '../models/Game.model'
+import { GameFieldLetters, GameMove, GameState } from '../Game.types'
+import {
+  FEATURE_NAME,
+  initGameField,
+  initialGameFigures,
+  updateCellFigure,
+} from '../models/Game.model'
 
 export const useGameStore = createStore<GameState>()(
   () => ({
     field: initGameField(initialGameFigures),
     selectedCell: null,
+    moves: [],
   }),
   {
     name: FEATURE_NAME,
@@ -22,6 +28,18 @@ export const chooseCell = (row: number, col: GameFieldLetters) => {
       row,
       col,
     },
+  }))
+}
+
+export const makeMove = (move: GameMove) => {
+  const gameState = useGameStore.getState()
+  let newField = updateCellFigure(gameState.field, move.from.row, move.from.col, null)
+  newField = updateCellFigure(newField, move.to.row, move.to.col, move.figure)
+
+  useGameStore.setState((state) => ({
+    ...state,
+    field: newField,
+    moves: [...state.moves, move],
   }))
 }
 
