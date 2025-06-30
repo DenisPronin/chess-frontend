@@ -32,7 +32,8 @@ export const chooseCell = (row: number, col: GameFieldLetters) => {
 export const makeMove = (move: GameMove) => {
   const gameState = useGameStore.getState()
 
-  const isValidMove = validateMove(move, gameState.field)
+  const lastMove = gameState.moves.at(-1) ?? null
+  const isValidMove = validateMove(move, gameState.field, lastMove)
   if (!isValidMove) {
     return
   }
