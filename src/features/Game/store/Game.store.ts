@@ -1,13 +1,10 @@
 import { isAppEnvLocal } from '@/features/Env'
 import { createStore } from '@/features/Store'
 import { GameFieldLetters, GameMove, GameState } from '../Game.types'
-import {
-  FEATURE_NAME,
-  initGameField,
-  initialGameFigures,
-  updateCellFigure,
-  validateMove,
-} from '../models/Game.model'
+import { FEATURE_NAME, initialGameFigures } from '../models/Game.model'
+import { initGameField } from '../models/GameField/initGameField'
+import { updateCellFigure } from '../models/GameField/updateCellFigure'
+import { validateMove } from '../models/GameValidators/validateMove'
 
 export const useGameStore = createStore<GameState>()(
   () => ({
