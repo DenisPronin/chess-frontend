@@ -6,6 +6,7 @@ import {
   initGameField,
   initialGameFigures,
   updateCellFigure,
+  validateMove,
 } from '../models/Game.model'
 
 export const useGameStore = createStore<GameState>()(
@@ -33,6 +34,12 @@ export const chooseCell = (row: number, col: GameFieldLetters) => {
 
 export const makeMove = (move: GameMove) => {
   const gameState = useGameStore.getState()
+
+  const isValidMove = validateMove(move, gameState.field)
+  if (!isValidMove) {
+    return
+  }
+
   let newField = updateCellFigure(gameState.field, move.from.row, move.from.col, null)
   newField = updateCellFigure(newField, move.to.row, move.to.col, move.figure)
 
