@@ -1,6 +1,7 @@
 import { Nullish } from '@/types'
 import {
   GameCellPosition,
+  GameColor,
   GameField,
   GameFieldLetters,
   GameFigureState,
@@ -64,4 +65,12 @@ export const getIntermediateCells = (move: GameMove): GameCellPosition[] => {
   }
 
   return cells
+}
+
+export const getLastMove = (moves: GameMove[]): Nullish<GameMove> => {
+  return moves.at(-1) ?? null
+}
+
+export const checkTurn = (move: GameMove, turn: GameColor): boolean => {
+  return move.figure.color === turn
 }

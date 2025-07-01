@@ -1,6 +1,7 @@
 import { isAppEnvLocal } from '@/features/Env'
+import { getLastMove } from '@/features/Game/models/Game.common'
 import { createStore } from '@/features/Store'
-import { GameFieldLetters, GameMove, GameState } from '../Game.types'
+import { GameColor, GameFieldLetters, GameMove, GameState } from '../Game.types'
 import { FEATURE_NAME, initialGameFigures } from '../models/Game.model'
 import { initGameField } from '../models/GameField/initGameField'
 import { updateCellFigure } from '../models/GameField/updateCellFigure'
@@ -12,6 +13,7 @@ export const useGameStore = createStore<GameState>()(
     field: initGameField(initialGameFigures),
     selectedCell: null,
     moves: [],
+    turn: GameColor.WHITE,
   }),
   {
     name: FEATURE_NAME,
@@ -33,8 +35,7 @@ export const chooseCell = (row: number, col: GameFieldLetters) => {
 export const makeMove = (move: GameMove) => {
   const gameState = useGameStore.getState()
 
-  const lastMove = gameState.moves.at(-1) ?? null
-  const isValidMove = validateMove(move, gameState.field, lastMove)
+  const isValidMove = validateMove(move, gameState)
   if (!isValidMove) {
     return
   }
@@ -42,6 +43,7 @@ export const makeMove = (move: GameMove) => {
   let newField = updateCellFigure(gameState.field, move.from.row, move.from.col, null)
   newField = updateCellFigure(newField, move.to.row, move.to.col, move.figure)
 
+  const lastMove = getLastMove(gameState.moves)
   if (lastMove && checkIsEnPassantMove(move, gameState.field, lastMove)) {
     newField = updateCellFigure(newField, lastMove.to.row, lastMove.to.col, null)
   }
@@ -50,6 +52,7 @@ export const makeMove = (move: GameMove) => {
     ...state,
     field: newField,
     moves: [...state.moves, move],
+    turn: state.turn === GameColor.WHITE ? GameColor.BLACK : GameColor.WHITE,
   }))
 }
 

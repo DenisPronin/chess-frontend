@@ -74,4 +74,5 @@ export interface GameState {
   field: GameField
   selectedCell: Nullish<GameCellPosition>
   moves: GameMove[]
+  turn: GameColor
 }
