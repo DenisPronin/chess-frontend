@@ -1,7 +1,7 @@
 import { Nullish } from '@/types'
 import { GameColor, GameField, GameMove } from '../../Game.types'
-import { GAME_FIELD_SIZE } from '../Game.model'
 import { getColIndexByLetter } from '../GameField/getColIndexByLetter'
+import { getRowIndex } from './GameValidators.common'
 
 const isDiagonalMove = (move: GameMove) => {
   const colDiff = Math.abs(getColIndexByLetter(move.from.col) - getColIndexByLetter(move.to.col))
@@ -29,7 +29,7 @@ export const isEnPassantMove = (
   field: GameField,
   lastMove: Nullish<GameMove>
 ): boolean => {
-  const rowToIndex = GAME_FIELD_SIZE - move.to.row
+  const rowToIndex = getRowIndex(move.to.row)
   const colToIndex = getColIndexByLetter(move.to.col)
   const hasFigureOnTargetCell = !!field.cells[rowToIndex][colToIndex].figure
 
@@ -58,7 +58,7 @@ export const validateMoveByPawn = (
     (move.from.row === 7 && move.figure.color === GameColor.BLACK)
   const isShortMove = Math.abs(move.from.row - move.to.row) === 1
 
-  const rowToIndex = GAME_FIELD_SIZE - move.to.row
+  const rowToIndex = getRowIndex(move.to.row)
   const prevRowIndex = move.figure.color === GameColor.WHITE ? rowToIndex + 1 : rowToIndex - 1
   const colToIndex = getColIndexByLetter(move.to.col)
   const hasFigureOnTargetCell = !!field.cells[rowToIndex][colToIndex].figure
