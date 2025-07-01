@@ -1,11 +1,5 @@
 import { GameField, GameMove } from '../../Game.types'
-import {
-  getColIndexByLetter,
-  getIntermediateCells,
-  getRowIndex,
-  isSameCol,
-  isSameRow,
-} from '../Game.common'
+import { getFigureByPosition, getIntermediateCells, isSameCol, isSameRow } from '../Game.common'
 
 export const validateMoveByRook = (move: GameMove, field: GameField): boolean => {
   const isStraightLineMove = isSameCol(move) || isSameRow(move)
@@ -15,16 +9,12 @@ export const validateMoveByRook = (move: GameMove, field: GameField): boolean =>
   const path = getIntermediateCells(move)
 
   const hasObstacles = path.some(({ row, col }) => {
-    const rowIndex = getRowIndex(row)
-    const colIndex = getColIndexByLetter(col)
-    return field.cells[rowIndex][colIndex].figure !== null
+    return getFigureByPosition(field, row, col) !== null
   })
 
   if (hasObstacles) return false
 
-  const targetRowIndex = getRowIndex(move.to.row)
-  const targetColIndex = getColIndexByLetter(move.to.col)
-  const targetFigure = field.cells[targetRowIndex][targetColIndex].figure
+  const targetFigure = getFigureByPosition(field, move.to.row, move.to.col)
 
   return !(targetFigure && targetFigure.color === move.figure.color)
 }

@@ -1,4 +1,11 @@
-import { GameCellPosition, GameFieldLetters, GameMove } from '../Game.types'
+import { Nullish } from '@/types'
+import {
+  GameCellPosition,
+  GameField,
+  GameFieldLetters,
+  GameFigureState,
+  GameMove,
+} from '../Game.types'
 import { GAME_FIELD_SIZE } from './Game.model'
 
 export const isSameCol = (move: GameMove): boolean => {
@@ -11,6 +18,16 @@ export const isSameRow = (move: GameMove): boolean => {
 
 export const getRowIndex = (row: number): number => {
   return GAME_FIELD_SIZE - row
+}
+
+export const getFigureByPosition = (
+  field: GameField,
+  row: number,
+  col: GameFieldLetters
+): Nullish<GameFigureState> => {
+  const targetRowIndex = getRowIndex(row)
+  const targetColIndex = getColIndexByLetter(col)
+  return field.cells[targetRowIndex][targetColIndex].figure
 }
 
 export const getColIndexByLetter = (letter: GameFieldLetters): number => {
@@ -32,7 +49,7 @@ export const getIntermediateCells = (move: GameMove): GameCellPosition[] => {
   let currentRow = fromRow + rowStep
   let currentCol = fromCol + colStep
 
-  while (currentRow !== move.to.row || currentCol !== toCol) {
+  while (currentRow !== toRow || currentCol !== toCol) {
     const colLetter = Object.values(GameFieldLetters)[currentCol]
 
     if (!colLetter) break
