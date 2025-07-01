@@ -1,6 +1,7 @@
 import { Nullish } from '@/types'
 import { GameField, GameFigureTypes, GameMove } from '../../Game.types'
 import { validateMoveByBishop } from './validateMoveByBishop'
+import { validateMoveByKing } from './validateMoveByKing'
 import { validateMoveByKnight } from './validateMoveByKnight'
 import { validateMoveByPawn } from './validateMoveByPawn'
 import { validateMoveByQueen } from './validateMoveByQueen'
@@ -12,7 +13,7 @@ export const validatorsMoveByFigure = {
   [GameFigureTypes.Knight]: validateMoveByKnight,
   [GameFigureTypes.Bishop]: validateMoveByBishop,
   [GameFigureTypes.Queen]: validateMoveByQueen,
-  [GameFigureTypes.King]: validateMoveByPawn,
+  [GameFigureTypes.King]: validateMoveByKing,
 }
 export const validateMove = (
   move: GameMove,
