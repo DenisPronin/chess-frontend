@@ -24,6 +24,29 @@ const isLongMove = (move: GameMove) => {
   return Math.abs(move.from.row - move.to.row) === 2
 }
 
+export const isEnPassantMove = (
+  move: GameMove,
+  field: GameField,
+  lastMove: Nullish<GameMove>
+): boolean => {
+  const rowToIndex = GAME_FIELD_SIZE - move.to.row
+  const colToIndex = getColIndexByLetter(move.to.col)
+  const hasFigureOnTargetCell = !!field.cells[rowToIndex][colToIndex].figure
+
+  if (isDiagonalMove(move) && !hasFigureOnTargetCell && lastMove) {
+    const isEnemyPawn =
+      lastMove.figure.type === move.figure.type && lastMove.figure.color !== move.figure.color
+    const sameRow = move.from.row === lastMove.to.row
+    const isCorrectRow =
+      move.figure.color === GameColor.WHITE ? lastMove.to.row === 5 : lastMove.to.row === 4
+    const isLastMoveLong = isLongMove(lastMove)
+
+    return isEnemyPawn && sameRow && isCorrectRow && isLastMoveLong
+  }
+
+  return false
+}
+
 export const validateMoveByPawn = (
   move: GameMove,
   field: GameField,
@@ -63,17 +86,5 @@ export const validateMoveByPawn = (
     return true
   }
 
-  // check for en passant
-  if (isDiagonalMove(move) && !hasFigureOnTargetCell && lastMove) {
-    const isEnemyPawn =
-      lastMove.figure.type === move.figure.type && lastMove.figure.color !== move.figure.color
-    const sameRow = move.from.row === lastMove.to.row
-    const isCorrectRow =
-      move.figure.color === GameColor.WHITE ? lastMove.to.row === 5 : lastMove.to.row === 4
-    const isLastMoveLong = isLongMove(lastMove)
-
-    return isEnemyPawn && sameRow && isCorrectRow && isLastMoveLong
-  }
-
-  return false
+  return isEnPassantMove(move, field, lastMove)
 }

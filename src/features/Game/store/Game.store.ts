@@ -1,4 +1,5 @@
 import { isAppEnvLocal } from '@/features/Env'
+import { isEnPassantMove } from '@/features/Game/models/GameValidators/validateMoveByPawn'
 import { createStore } from '@/features/Store'
 import { GameFieldLetters, GameMove, GameState } from '../Game.types'
 import { FEATURE_NAME, initialGameFigures } from '../models/Game.model'
@@ -40,6 +41,10 @@ export const makeMove = (move: GameMove) => {
 
   let newField = updateCellFigure(gameState.field, move.from.row, move.from.col, null)
   newField = updateCellFigure(newField, move.to.row, move.to.col, move.figure)
+
+  if (lastMove && isEnPassantMove(move, gameState.field, lastMove)) {
+    newField = updateCellFigure(newField, lastMove.to.row, lastMove.to.col, null)
+  }
 
   useGameStore.setState((state) => ({
     ...state,
