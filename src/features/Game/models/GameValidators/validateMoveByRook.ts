@@ -1,10 +1,8 @@
 import { GameField, GameMove } from '../../Game.types'
-import { isSameCol, isSameRow } from '../Game.common'
-import { checkIsTargetEnemy, checkObstacles } from './GameValidators.common'
+import { checkIsMoveStraight, checkIsTargetEnemy, checkObstacles } from './GameValidators.common'
 
 export const validateMoveByRook = (move: GameMove, field: GameField): boolean => {
-  const isStraightLineMove = isSameCol(move) || isSameRow(move)
-
+  const isStraightLineMove = checkIsMoveStraight(move)
   if (!isStraightLineMove) return false
 
   const hasObstacles = checkObstacles(move, field)

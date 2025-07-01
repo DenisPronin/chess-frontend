@@ -8,11 +8,11 @@ import {
 } from '../Game.types'
 import { GAME_FIELD_SIZE } from './Game.model'
 
-export const isSameCol = (move: GameMove): boolean => {
+export const checkIsSameCol = (move: GameMove): boolean => {
   return move.from.col === move.to.col
 }
 
-export const isSameRow = (move: GameMove): boolean => {
+export const checkIsSameRow = (move: GameMove): boolean => {
   return move.from.row === move.to.row
 }
 

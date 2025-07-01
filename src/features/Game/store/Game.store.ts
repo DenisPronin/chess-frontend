@@ -5,7 +5,7 @@ import { FEATURE_NAME, initialGameFigures } from '../models/Game.model'
 import { initGameField } from '../models/GameField/initGameField'
 import { updateCellFigure } from '../models/GameField/updateCellFigure'
 import { validateMove } from '../models/GameValidators/validateMove'
-import { isEnPassantMove } from '../models/GameValidators/validateMoveByPawn'
+import { checkIsEnPassantMove } from '../models/GameValidators/validateMoveByPawn'
 
 export const useGameStore = createStore<GameState>()(
   () => ({
@@ -42,7 +42,7 @@ export const makeMove = (move: GameMove) => {
   let newField = updateCellFigure(gameState.field, move.from.row, move.from.col, null)
   newField = updateCellFigure(newField, move.to.row, move.to.col, move.figure)
 
-  if (lastMove && isEnPassantMove(move, gameState.field, lastMove)) {
+  if (lastMove && checkIsEnPassantMove(move, gameState.field, lastMove)) {
     newField = updateCellFigure(newField, lastMove.to.row, lastMove.to.col, null)
   }
 

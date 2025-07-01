@@ -1,14 +1,8 @@
 import { GameField, GameMove } from '../../Game.types'
-import { getColIndexByLetter } from '../Game.common'
-import { checkIsTargetEnemy, checkObstacles } from './GameValidators.common'
+import { checkIsMoveDiagonal, checkIsTargetEnemy, checkObstacles } from './GameValidators.common'
 
 export const validateMoveByBishop = (move: GameMove, field: GameField): boolean => {
-  const colDiff = Math.abs(getColIndexByLetter(move.from.col) - getColIndexByLetter(move.to.col))
-  const rowDiff = Math.abs(move.from.row - move.to.row)
-
-  if (colDiff !== rowDiff) {
-    return false
-  }
+  if (!checkIsMoveDiagonal(move)) return false
 
   const hasObstacles = checkObstacles(move, field)
   if (hasObstacles) return false
