@@ -1,4 +1,4 @@
-import { GameFenSymbols } from '../Game.types'
+import { GameFenSymbols } from '../../Game.types'
 
 export function parseFen(fen: string) {
   const fenRows = fen.split('/')

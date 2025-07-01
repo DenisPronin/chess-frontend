@@ -57,7 +57,7 @@ export function AuthLogin() {
           </UIText>
 
           <Button type="submit" loading={isLoginLoading} color="teal" fullWidth>
-            Войти
+            Sign In
           </Button>
         </Stack>
       </form>
