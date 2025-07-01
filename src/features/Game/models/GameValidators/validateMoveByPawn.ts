@@ -1,6 +1,6 @@
 import { Nullish } from '@/types'
 import { GameColor, GameField, GameMove } from '../../Game.types'
-import { getColIndexByLetter, getFigureByPosition, getRowIndex } from '../Game.common'
+import { getColIndexByLetter, getFigureByPosition } from '../Game.common'
 
 const isDiagonalMove = (move: GameMove) => {
   const colDiff = Math.abs(getColIndexByLetter(move.from.col) - getColIndexByLetter(move.to.col))
@@ -49,33 +49,33 @@ export const validateMoveByPawn = (
   field: GameField,
   lastMove: Nullish<GameMove>
 ): boolean => {
+  const direction = move.figure.color === GameColor.WHITE ? 1 : -1
+  const rowDiff = move.to.row - move.from.row
+
+  // move must be forward
+  if (Math.sign(rowDiff) !== direction) {
+    return false
+  }
+
   const isSameCol = move.from.col === move.to.col
   const isStartPosition =
     (move.from.row === 2 && move.figure.color === GameColor.WHITE) ||
     (move.from.row === 7 && move.figure.color === GameColor.BLACK)
-  const isShortMove = Math.abs(move.from.row - move.to.row) === 1
+  const isShortMove = Math.abs(rowDiff) === 1
 
-  const rowToIndex = getRowIndex(move.to.row)
-  const prevRowIndex = move.figure.color === GameColor.WHITE ? rowToIndex + 1 : rowToIndex - 1
-  const hasFigureOnTargetCell = !!getFigureByPosition(field, rowToIndex, move.to.col)
-  const hasFigureOnPrevCell = !!getFigureByPosition(field, prevRowIndex, move.to.col)
+  const prevRowIndex = move.figure.color === GameColor.WHITE ? move.to.row - 1 : move.to.row + 1
+  const targetFigure = getFigureByPosition(field, move.to.row, move.to.col)
+  const figureOnPrevCell = getFigureByPosition(field, prevRowIndex, move.to.col)
 
   // short move forward without figure on target cell
-  if (isSameCol && isShortMove && !hasFigureOnTargetCell) {
+  if (isSameCol && isShortMove && !targetFigure) {
     return true
   }
 
-  if (
-    isStartPosition &&
-    isLongMove(move) &&
-    isSameCol &&
-    !hasFigureOnTargetCell &&
-    !hasFigureOnPrevCell
-  ) {
+  if (isStartPosition && isLongMove(move) && isSameCol && !targetFigure && !figureOnPrevCell) {
     return true
   }
 
-  const targetFigure = getFigureByPosition(field, rowToIndex, move.to.col)
   const isEnemyFigureOnTargetCell = targetFigure && targetFigure.color !== move.figure.color
 
   if (isDiagonalMove(move) && isEnemyFigureOnTargetCell && isShortMove) {
