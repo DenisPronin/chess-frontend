@@ -1,10 +1,11 @@
 import { Nullish } from '@/types'
 import { GameField, GameFigureTypes, GameMove } from '../../Game.types'
 import { validateMoveByPawn } from './validateMoveByPawn'
+import { validateMoveByRook } from './validateMoveByRook'
 
 export const validatorsMoveByFigure = {
   [GameFigureTypes.Pawn]: validateMoveByPawn,
-  [GameFigureTypes.Rook]: validateMoveByPawn,
+  [GameFigureTypes.Rook]: validateMoveByRook,
   [GameFigureTypes.Knight]: validateMoveByPawn,
   [GameFigureTypes.Bishop]: validateMoveByPawn,
   [GameFigureTypes.Queen]: validateMoveByPawn,

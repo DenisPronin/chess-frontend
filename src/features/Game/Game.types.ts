@@ -46,21 +46,17 @@ export interface GameFigureState {
   color: GameColor
 }
 
-export interface GameSelectedCell {
+export interface GameCellPosition {
   row: number
   col: GameFieldLetters
 }
 
-export interface GameCell {
+export interface GameCell extends GameCellPosition {
   color: GameColor
-  row: number
-  col: GameFieldLetters
   figure: Nullish<GameFigureState>
 }
 
-export interface GameCellWithFigure {
-  row: number
-  col: GameFieldLetters
+export interface GameCellWithFigure extends GameCellPosition {
   figure: GameFigureState
 }
 
@@ -69,13 +65,13 @@ export interface GameField {
 }
 
 export interface GameMove {
-  from: { row: number; col: GameFieldLetters }
-  to: { row: number; col: GameFieldLetters }
+  from: GameCellPosition
+  to: GameCellPosition
   figure: GameFigureState
 }
 
 export interface GameState {
   field: GameField
-  selectedCell: Nullish<GameSelectedCell>
+  selectedCell: Nullish<GameCellPosition>
   moves: GameMove[]
 }
