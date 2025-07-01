@@ -1,7 +1,7 @@
 import { GameCell, GameColor, GameField, GameFieldLetters } from '../../Game.types'
+import { getRowIndex } from '../Game.common'
 import { GAME_FIELD_SIZE } from '../Game.model'
 import { restorePosition } from '../GameField/restorePosition'
-import { getRowIndex } from '../GameValidators/GameValidators.common'
 
 function createCell(i: number, j: number): GameCell {
   const letters = Object.values(GameFieldLetters)

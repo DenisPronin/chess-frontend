@@ -1,7 +1,6 @@
 import { Nullish } from '@/types'
 import { GameColor, GameField, GameMove } from '../../Game.types'
-import { getColIndexByLetter } from '../GameField/getColIndexByLetter'
-import { getRowIndex } from './GameValidators.common'
+import { getColIndexByLetter, getRowIndex } from '../Game.common'
 
 const isDiagonalMove = (move: GameMove) => {
   const colDiff = Math.abs(getColIndexByLetter(move.from.col) - getColIndexByLetter(move.to.col))

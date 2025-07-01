@@ -1,6 +1,11 @@
 import { GameField, GameMove } from '../../Game.types'
-import { getColIndexByLetter } from '../GameField/getColIndexByLetter'
-import { getIntermediateCells, getRowIndex, isSameCol, isSameRow } from './GameValidators.common'
+import {
+  getColIndexByLetter,
+  getIntermediateCells,
+  getRowIndex,
+  isSameCol,
+  isSameRow,
+} from '../Game.common'
 
 export const validateMoveByRook = (move: GameMove, field: GameField): boolean => {
   const isStraightLineMove = isSameCol(move) || isSameRow(move)

@@ -1,6 +1,5 @@
-import { GameCellPosition, GameFieldLetters, GameMove } from '../../Game.types'
-import { GAME_FIELD_SIZE } from '../Game.model'
-import { getColIndexByLetter } from '../GameField/getColIndexByLetter'
+import { GameCellPosition, GameFieldLetters, GameMove } from '../Game.types'
+import { GAME_FIELD_SIZE } from './Game.model'
 
 export const isSameCol = (move: GameMove): boolean => {
   return move.from.col === move.to.col
@@ -12,6 +11,11 @@ export const isSameRow = (move: GameMove): boolean => {
 
 export const getRowIndex = (row: number): number => {
   return GAME_FIELD_SIZE - row
+}
+
+export const getColIndexByLetter = (letter: GameFieldLetters): number => {
+  const letters = Object.values(GameFieldLetters)
+  return letters.indexOf(letter)
 }
 
 export const getIntermediateCells = (move: GameMove): GameCellPosition[] => {
