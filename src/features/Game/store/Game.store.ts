@@ -1,11 +1,11 @@
 import { isAppEnvLocal } from '@/features/Env'
-import { isEnPassantMove } from '@/features/Game/models/GameValidators/validateMoveByPawn'
 import { createStore } from '@/features/Store'
 import { GameFieldLetters, GameMove, GameState } from '../Game.types'
 import { FEATURE_NAME, initialGameFigures } from '../models/Game.model'
 import { initGameField } from '../models/GameField/initGameField'
 import { updateCellFigure } from '../models/GameField/updateCellFigure'
 import { validateMove } from '../models/GameValidators/validateMove'
+import { isEnPassantMove } from '../models/GameValidators/validateMoveByPawn'
 
 export const useGameStore = createStore<GameState>()(
   () => ({
