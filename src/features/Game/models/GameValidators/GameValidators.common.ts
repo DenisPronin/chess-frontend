@@ -1,10 +1,10 @@
 import { GameField, GameMove } from '../../Game.types'
 import {
+  checkIsSameCol,
+  checkIsSameRow,
   getColIndexByLetter,
   getFigureByPosition,
   getIntermediateCells,
-  isSameCol,
-  isSameRow,
 } from '../Game.common'
 
 export const getMovePositionDiff = (move: GameMove): { rowDiff: number; colDiff: number } => {
@@ -32,11 +32,11 @@ export const checkObstacles = (move: GameMove, field: GameField): boolean => {
   })
 }
 
-export const isMoveStraight = (move: GameMove): boolean => {
-  return isSameCol(move) || isSameRow(move)
+export const checkIsMoveStraight = (move: GameMove): boolean => {
+  return checkIsSameCol(move) || checkIsSameRow(move)
 }
 
-export const isMoveDiagonal = (move: GameMove): boolean => {
+export const checkIsMoveDiagonal = (move: GameMove): boolean => {
   const { colDiff, rowDiff } = getMovePositionDiff(move)
   return colDiff === rowDiff
 }

@@ -1,13 +1,13 @@
 import { GameField, GameMove } from '../../Game.types'
 import {
+  checkIsMoveDiagonal,
+  checkIsMoveStraight,
   checkIsTargetEnemy,
   checkObstacles,
-  isMoveDiagonal,
-  isMoveStraight,
 } from './GameValidators.common'
 
 export const validateMoveByQueen = (move: GameMove, field: GameField): boolean => {
-  if (!isMoveDiagonal(move) && !isMoveStraight(move)) return false
+  if (!checkIsMoveDiagonal(move) && !checkIsMoveStraight(move)) return false
 
   const hasObstacles = checkObstacles(move, field)
   if (hasObstacles) return false

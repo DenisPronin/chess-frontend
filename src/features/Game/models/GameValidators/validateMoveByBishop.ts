@@ -1,8 +1,8 @@
 import { GameField, GameMove } from '../../Game.types'
-import { checkIsTargetEnemy, checkObstacles, isMoveDiagonal } from './GameValidators.common'
+import { checkIsMoveDiagonal, checkIsTargetEnemy, checkObstacles } from './GameValidators.common'
 
 export const validateMoveByBishop = (move: GameMove, field: GameField): boolean => {
-  if (!isMoveDiagonal(move)) return false
+  if (!checkIsMoveDiagonal(move)) return false
 
   const hasObstacles = checkObstacles(move, field)
   if (hasObstacles) return false

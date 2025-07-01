@@ -1,11 +1,10 @@
 import { Nullish } from '@/types'
 import { GameColor, GameField, GameMove } from '../../Game.types'
-import { getColIndexByLetter, getFigureByPosition } from '../Game.common'
-import { checkIsTargetEnemy } from './GameValidators.common'
+import { checkIsSameCol, getFigureByPosition } from '../Game.common'
+import { checkIsTargetEnemy, getMovePositionDiff } from './GameValidators.common'
 
-const isDiagonalMove = (move: GameMove) => {
-  const colDiff = Math.abs(getColIndexByLetter(move.from.col) - getColIndexByLetter(move.to.col))
-  const rowDiff = move.to.row - move.from.row
+const checkIsMoveDiagonal = (move: GameMove) => {
+  const { colDiff, rowDiff } = getMovePositionDiff(move)
 
   if (colDiff !== 1) return false
 
@@ -20,24 +19,24 @@ const isDiagonalMove = (move: GameMove) => {
   return false
 }
 
-const isLongMove = (move: GameMove) => {
+const checkIsLongMove = (move: GameMove) => {
   return Math.abs(move.from.row - move.to.row) === 2
 }
 
-export const isEnPassantMove = (
+export const checkIsEnPassantMove = (
   move: GameMove,
   field: GameField,
   lastMove: Nullish<GameMove>
 ): boolean => {
   const hasFigureOnTargetCell = !!getFigureByPosition(field, move.to.row, move.to.col)
 
-  if (isDiagonalMove(move) && !hasFigureOnTargetCell && lastMove) {
+  if (checkIsMoveDiagonal(move) && !hasFigureOnTargetCell && lastMove) {
     const isEnemyPawn =
       lastMove.figure.type === move.figure.type && lastMove.figure.color !== move.figure.color
     const sameRow = move.from.row === lastMove.to.row
     const isCorrectRow =
       move.figure.color === GameColor.WHITE ? lastMove.to.row === 5 : lastMove.to.row === 4
-    const isLastMoveLong = isLongMove(lastMove)
+    const isLastMoveLong = checkIsLongMove(lastMove)
 
     return isEnemyPawn && sameRow && isCorrectRow && isLastMoveLong
   }
@@ -58,7 +57,7 @@ export const validateMoveByPawn = (
     return false
   }
 
-  const isSameCol = move.from.col === move.to.col
+  const isSameCol = checkIsSameCol(move)
   const isStartPosition =
     (move.from.row === 2 && move.figure.color === GameColor.WHITE) ||
     (move.from.row === 7 && move.figure.color === GameColor.BLACK)
@@ -73,15 +72,16 @@ export const validateMoveByPawn = (
     return true
   }
 
-  if (isStartPosition && isLongMove(move) && isSameCol && !targetFigure && !figureOnPrevCell) {
+  // long move fron start position
+  if (isStartPosition && checkIsLongMove(move) && isSameCol && !targetFigure && !figureOnPrevCell) {
     return true
   }
 
   const isEnemyFigureOnTargetCell = checkIsTargetEnemy(move, field)
 
-  if (isDiagonalMove(move) && isEnemyFigureOnTargetCell && isShortMove) {
+  if (checkIsMoveDiagonal(move) && isEnemyFigureOnTargetCell && isShortMove) {
     return true
   }
 
-  return isEnPassantMove(move, field, lastMove)
+  return checkIsEnPassantMove(move, field, lastMove)
 }
