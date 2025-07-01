@@ -1,6 +1,7 @@
 import { Nullish } from '@/types'
 import { GameColor, GameField, GameMove } from '../../Game.types'
 import { getColIndexByLetter, getFigureByPosition } from '../Game.common'
+import { checkIsTargetEnemy } from './GameValidators.common'
 
 const isDiagonalMove = (move: GameMove) => {
   const colDiff = Math.abs(getColIndexByLetter(move.from.col) - getColIndexByLetter(move.to.col))
@@ -76,7 +77,7 @@ export const validateMoveByPawn = (
     return true
   }
 
-  const isEnemyFigureOnTargetCell = targetFigure && targetFigure.color !== move.figure.color
+  const isEnemyFigureOnTargetCell = checkIsTargetEnemy(move, field)
 
   if (isDiagonalMove(move) && isEnemyFigureOnTargetCell && isShortMove) {
     return true
